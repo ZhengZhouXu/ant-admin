@@ -5,7 +5,8 @@
     },
     components: {
       home: resolve => require(['@/page/home/home'], resolve),
-      generatePage: resolve => require(['@/components/generatepage/generatepage'], resolve)
+      generatePage: resolve => require(['@/components/generatepage/generatepage'], resolve),
+      addPage: resolve => require(['@/page/addpage/addpage'], resolve)
     },
     props: {
       component: {

@@ -25,7 +25,7 @@
 
           <el-submenu index="3">
             <template slot="title"><i class="el-icon-setting"></i>全局配置</template>
-            <el-menu-item index="membermanage">添加页面</el-menu-item>
+            <el-menu-item index="addPage" add="123">添加页面</el-menu-item>
           </el-submenu>
 
         </el-menu>
@@ -34,7 +34,7 @@
     <el-col :span="21">
       <el-tabs v-model="activeTab" type="border-card" closable @tab-remove="closeTab" @tab-click="tabSelect">
         <el-tab-pane v-for="tab in tabs" :key="tab.name" :label="tab.title" :name="tab.name">
-          <tabContent :component="'generatePage'"></tabContent>
+          <tabContent :component="tab.component"></tabContent>
         </el-tab-pane>
       </el-tabs>
     </el-col>
@@ -50,7 +50,8 @@
         activeTab: 'home',
         tabs: [{
           title: '首页',
-          name: 'home'
+          name: 'home',
+          component: 'home'
         }]
       }
     },
@@ -58,8 +59,7 @@
       this.$router.push('/')
     },
     methods: {
-      menuSelect (key, keyPath) {
-        this.$router.push('/' + key)
+      menuSelect (key) {
         this._addNewTab(key)
       },
       tabSelect (tab) {
@@ -78,15 +78,15 @@
         if (!this.tabs.find(tab => tab.name === key)) {
           this.tabs.push({
             title: this._getTabTitle(key),
-            name: key
+            name: key,
+            component: key
           })
         }
         this.activeTab = key
       },
       _getTabTitle (key) {
         switch (key) {
-          case 'membermanage':
-            return '用户管理'
+          case 'addPage': return '添加页面'
         }
       }
     },
