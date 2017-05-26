@@ -9,7 +9,7 @@
     </el-row>
 
     <el-row class="tac">
-      <el-col :span="3">
+      <el-col :span="3" :xs="{span:6}" :sm="{span:5}" :md="{span:5}" :lg="{span:3}">
         <el-menu class="el-menu-vertical-demo" @select="menuSelect" @open="" @close="" theme="dark">
 
           <el-submenu index="usermanage">
@@ -31,10 +31,11 @@
         </el-menu>
       </el-col>
 
-    <el-col :span="21">
+    <el-col :span="21" :xs="{span:18}" :sm="{span:19}" :md="{span:19}" :lg="{span:21}">
       <el-tabs v-model="activeTab" type="border-card" closable @tab-remove="closeTab" @tab-click="tabSelect">
         <el-tab-pane v-for="tab in tabs" :key="tab.name" :label="tab.title" :name="tab.name">
-          <tabContent :component="tab.component"></tabContent>
+          <!--<tabContent :component="tab.component"></tabContent>-->
+          <component :is="tab.component"></component>
         </el-tab-pane>
       </el-tabs>
     </el-col>
@@ -43,7 +44,9 @@
 </template>
 
 <script>
-  import tabContent from '@/components/tabcontent/tabcontent'
+  // import tabContent from '@/components/tabcontent/tabcontent'
+  import home from '@/page/home/home'
+  import membermanage from '@/page/membermanage/membermanage'
   export default{
     data () {
       return {
@@ -59,8 +62,9 @@
       this.$router.push('/')
     },
     methods: {
-      menuSelect (key) {
-        this._addNewTab(key)
+      menuSelect (key, keyPath, v) {
+        var name = v.$el.innerText
+        this._addNewTab(key, name)
       },
       tabSelect (tab) {
         this.$router.push('/' + tab.name)
@@ -70,28 +74,24 @@
         let index = tabs.findIndex((tab) => tab.name === closeTabName)
         if (this.activeTab === closeTabName) {
           let newActiveTab = tabs[index + 1] || tabs[index - 1]
-          newActiveTab ? this.activeTab = newActiveTab : void 0
+          newActiveTab ? this.activeTab = newActiveTab.name : void 0
         }
         tabs = tabs.splice(index, 1)
       },
-      _addNewTab (key) {
+      _addNewTab (key, name) {
         if (!this.tabs.find(tab => tab.name === key)) {
           this.tabs.push({
-            title: this._getTabTitle(key),
+            title: name,
             name: key,
             component: key
           })
         }
         this.activeTab = key
-      },
-      _getTabTitle (key) {
-        switch (key) {
-          case 'addPage': return '添加页面'
-        }
       }
     },
     components: {
-      tabContent
+      home,
+      membermanage
     }
   }
 </script>

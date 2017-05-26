@@ -10,6 +10,18 @@ import './style/base.sass'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
+/* init */
+Vue.prototype.openSuccess = (message) => {
+  Vue.prototype.$message({
+    message,
+    type: 'success'
+  })
+}
+
+Vue.prototype.openError = (message) => {
+  Vue.prototype.$message.error(message)
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
