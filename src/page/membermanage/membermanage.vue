@@ -41,7 +41,11 @@
           <el-table-column prop="id" label="ID" width="100" />
           <el-table-column prop="account" label="账号" />
           <el-table-column prop="nickname" label="昵称" />
-          <el-table-column prop="time" label="注册时间" />
+          <el-table-column prop="time" label="注册时间" >
+            <template scope="scope">
+              {{scope.row.time | timeFormat}}
+            </template>
+          </el-table-column>
           <el-table-column prop="status" label="状态" >
             <template scope="scope">
               <span :style="{color: scope.row.status === 0 ? 'green': 'red'}">{{scope.row.status | status}}</span>
@@ -156,14 +160,14 @@
         this.search(page)
       }
     },
-    filters: {
-      status (value) {
-        switch (value) {
-          case 0: return '正常'
-          case 1: return '禁用'
-        }
-      }
-    },
+    // filters: {
+    //   status (value) {
+    //     switch (value) {
+    //       case 0: return '正常'
+    //       case 1: return '禁用'
+    //     }
+    //   }
+    // },
     computed: {
       ids () {
         return this.selectedData.map(item => item.id)

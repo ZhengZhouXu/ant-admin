@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
+import moment from 'moment'
 import 'element-ui/lib/theme-default/index.css'
 import './style/base.sass'
 
@@ -21,6 +22,17 @@ Vue.prototype.openSuccess = (message) => {
 Vue.prototype.openError = (message) => {
   Vue.prototype.$message.error(message)
 }
+
+/* 全局filter */
+Vue.filter('status', function (value) {
+  switch (value) {
+    case 0: return '正常'
+    case 1: return '禁用'
+  }
+})
+Vue.filter('timeFormat', function (value) {
+  return moment(value).format('YYYY-MM-DD hh:mm:ss')
+})
 
 /* eslint-disable no-new */
 new Vue({

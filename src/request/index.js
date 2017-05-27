@@ -37,4 +37,28 @@ var memberManageRequest = {
   }
 }
 
-export {addPageRequest, memberManageRequest}
+var messageManageRequest = {
+  search (param) {
+    return post('/admin/MessageManage/search', sf(param))
+  },
+  del (ids) {
+    return post('/admin/MessageManage/delete', sf({ids}))
+  }
+}
+
+var communityManageRequest = {
+  search (param) {
+    return post('/admin/Community/search', sf(param))
+  },
+  dissolve (ids) {
+    return post('/admin/Community/Dissolve', sf({ids}))
+  }
+}
+
+export {
+  addPageRequest,
+  memberManageRequest,
+  messageManageRequest,
+  communityManageRequest
+}
+

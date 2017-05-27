@@ -15,6 +15,8 @@
           <el-submenu index="usermanage">
             <template slot="title"><i class="icon-user"></i> 用户管理</template>
             <el-menu-item index="membermanage">会员管理</el-menu-item>
+            <el-menu-item index="messagemanage">消息管理</el-menu-item>
+            <el-menu-item index="communitymanage">社团管理</el-menu-item>
             <el-submenu index="1-2">
               <template slot="title">后台管理员</template>
               <el-menu-item index="1-2-1" >账号管理</el-menu-item>
@@ -44,9 +46,7 @@
 </template>
 
 <script>
-  // import tabContent from '@/components/tabcontent/tabcontent'
   import home from '@/page/home/home'
-  import membermanage from '@/page/membermanage/membermanage'
   export default{
     data () {
       return {
@@ -65,9 +65,6 @@
       menuSelect (key, keyPath, v) {
         var name = v.$el.innerText
         this._addNewTab(key, name)
-      },
-      tabSelect (tab) {
-        this.$router.push('/' + tab.name)
       },
       closeTab (closeTabName) {
         let tabs = this.tabs
@@ -91,7 +88,9 @@
     },
     components: {
       home,
-      membermanage
+      membermanage: resolve => require(['@/page/membermanage/membermanage'], resolve),
+      messagemanage: resolve => require(['@/page/messagemanage/messagemanage'], resolve),
+      communitymanage: resolve => require(['@/page/communitymanage/communitymanage'], resolve)
     }
   }
 </script>
