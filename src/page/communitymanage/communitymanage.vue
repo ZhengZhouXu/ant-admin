@@ -10,6 +10,7 @@
     <el-row :gutter="3">
       <el-col :span="15">
         <el-button @click="dissolve" type="danger">解散</el-button>
+        <el-button @click="recover" type="success">恢复</el-button>
       </el-col>
       <el-col :span="3">
         <el-select v-model="selects" placeholder="搜索字段">
@@ -47,6 +48,11 @@
           <el-table-column prop="peopleNum" label="人数" />
           <el-table-column prop="topicNum" label="话题数" />
           <el-table-column prop="voteNum" label="票数" />
+          <el-table-column prop="status" label="状态">
+            <template scope="scope">
+              <span :style="{color: scope.row.status === 0 ? 'green': 'red'}">{{scope.row.status | status}}</span>
+            </template>
+          </el-table-column>
         </el-table>
       </el-col>
     </el-row>
@@ -93,20 +99,33 @@
           })
       },
       dissolve () {
-        console.log(this.ids)
         communityManageRequest
           .dissolve(this.ids)
           .then(({data}) => {
             this.openSuccess(`成功操作${this.ids.length}条记录`)
-            this.selectedData.forEach(s => {
-              var index = this.tableData.indexOf(s)
-              this.tableData(index, 1)
-            })
+            this.changeSelectStatus(1) // 修改状态
             this.clearTableSelection()
           })
           .catch(() => {
             this.openError('操作失败！')
           })
+      },
+      async recover () {
+        try {
+          await communityManageRequest.recover(this.ids)
+          this.openSuccess(`成功操作${this.ids.length}条记录`)
+          this.changeSelectStatus(0) // 修改状态
+          this.clearTableSelection()
+        } catch (error) {
+          this.openError('操作失败！')
+        }
+      },
+      changeSelectStatus (status) {
+        this.tableData.forEach(item => {
+          if (this.ids.includes(item.id)) {
+            item.status = status
+          }
+        })
       },
       clearTableSelection () {
         this.$refs.dataTable.clearSelection()
@@ -119,8 +138,9 @@
       selectOptions () {
         let mapName = new Map([
           ['id', 'ID'],
-          ['messageInfo', '内容'],
-          ['nickname', '昵称'],
+          ['name', '社团名'],
+          ['nickname', '创建者用户名'],
+          ['schoolName', '学校名'],
           ['status', '状态']
         ])
 
@@ -133,6 +153,14 @@
               label: mapName.get(item)
             }
           })
+      }
+    },
+    filters: {
+      status (value) {
+        switch (value) {
+          case 0: return '正常'
+          case 1: return '解散'
+        }
       }
     }
   }

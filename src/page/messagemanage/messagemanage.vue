@@ -108,7 +108,6 @@
             this.openSuccess(`成功操作${this.ids.length}条记录`)
             this.selectedData.forEach(s => {
               s.status = 1
-              s.messageInfo = '该内容已删除'
             })
             this.clearTableSelection()
           })

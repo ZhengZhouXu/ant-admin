@@ -4,6 +4,16 @@ import qs from 'qs'
 const sf = qs.stringify
 const post = axios.post
 
+var loginRequest = {
+  login (username, password, code) {
+    return post('/admin/login/login', sf({username, password, code}))
+  }
+}
+
+var indexRequest = {
+  getPowers () {}
+}
+
 var addPageRequest = {
   allTableName () {
     return post('/addpage/AllTableName')
@@ -52,13 +62,22 @@ var communityManageRequest = {
   },
   dissolve (ids) {
     return post('/admin/Community/Dissolve', sf({ids}))
+  },
+  recover (ids) {
+    return post('/admin/Community/Recover', sf({ids}))
   }
 }
 
+var roleManageRequest = {
+}
+
 export {
+  loginRequest,
+  indexRequest,
   addPageRequest,
   memberManageRequest,
   messageManageRequest,
-  communityManageRequest
+  communityManageRequest,
+  roleManageRequest
 }
 

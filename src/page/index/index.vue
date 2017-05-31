@@ -34,9 +34,8 @@
       </el-col>
 
     <el-col :span="21" :xs="{span:18}" :sm="{span:19}" :md="{span:19}" :lg="{span:21}">
-      <el-tabs v-model="activeTab" type="border-card" closable @tab-remove="closeTab" @tab-click="tabSelect">
+      <el-tabs v-model="activeTab" type="border-card" closable @tab-remove="closeTab" @tab-click="">
         <el-tab-pane v-for="tab in tabs" :key="tab.name" :label="tab.title" :name="tab.name">
-          <!--<tabContent :component="tab.component"></tabContent>-->
           <component :is="tab.component"></component>
         </el-tab-pane>
       </el-tabs>
@@ -57,9 +56,6 @@
           component: 'home'
         }]
       }
-    },
-    beforeCreate () {
-      this.$router.push('/')
     },
     methods: {
       menuSelect (key, keyPath, v) {
