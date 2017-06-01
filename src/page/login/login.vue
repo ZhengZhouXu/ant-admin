@@ -33,16 +33,16 @@ export default {
   methods: {
     async toLogin () {
       let res = await loginRequest.login(this.username, this.password, this.code)
-      if (res.data.info === 'NoError') {
-        // TODO: 将用户存入vuex中
-        this.$store.commit('setUser', res.data.data)
+      if (typeof res.data !== 'string') {
+        this.$store.commit('setUser', res.data)
+        console.log(this.$store.state.user.userInfo)
         this.$router.push('/index')
       } else {
-        this.openError(res.data.info)
+        this.openError(res.data)
       }
     },
     changeVailad (e) {
-      e.currentTarget.src = e.currentTarget.src + '1'
+      e.currentTarget.src = e.currentTarget.src + Date.now()
     }
   }
 }

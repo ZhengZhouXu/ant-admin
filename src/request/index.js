@@ -7,6 +7,9 @@ const post = axios.post
 var loginRequest = {
   login (username, password, code) {
     return post('/admin/login/login', sf({username, password, code}))
+  },
+  isLogin () {
+    return post('/admin/login/IsLogin')
   }
 }
 

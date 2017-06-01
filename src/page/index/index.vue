@@ -4,7 +4,7 @@
     <el-row class="head">
       <el-col :span="24">
         <span class="title lt">乐疯网后台管理</span>
-        <span class="user rt">管理员 xuxule</span>
+        <span class="user rt">管理员 {{ userName }}</span>
       </el-col>
     </el-row>
 
@@ -80,6 +80,11 @@
           })
         }
         this.activeTab = key
+      }
+    },
+    computed: {
+      userName () {
+        return this.$store.state.user.userInfo.name
       }
     },
     components: {

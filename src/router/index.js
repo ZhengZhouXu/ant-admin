@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store'
+import {loginRequest} from '@/request'
 
 const index = resolve => require(['@/page/index/index.vue'], resolve)
 const login = resolve => require(['@/page/login/login.vue'], resolve)
@@ -14,13 +15,20 @@ export default new Router({
   }, {
     path: '/index',
     component: index,
-    beforeEnter: (to, from, next) => {
+    beforeEnter: async (to, from, next) => {
       let toPath = to.fullPath.toLowerCase()
-      // TODO: 检测是否登录
+
       if (toPath === '/index' && !store.state.user.userInfo) {
-        next('/')
+        let res = await loginRequest.isLogin()
+        if (res.data) {
+          store.commit('setUser', res.data)
+          next()
+        } else {
+          next('/')
+        }
+      } else {
+        next()
       }
-      next()
     }
   }]
 })
