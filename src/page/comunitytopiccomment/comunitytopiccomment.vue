@@ -1,18 +1,16 @@
 <template>
-  <div class="member-manage">
+  <div class="community-topic">
     <el-row>
       <el-col>
-        <div class="title">会员管理</div>
+        <div class="title">社团帖子评论管理</div>
       </el-col>
     </el-row>
 
     <!--操作-->
     <el-row :gutter="3">
       <el-col :span="15">
-        <el-button @click="forbid" type="danger">禁用</el-button>
-        <el-button @click="recover" type="success">恢复</el-button>
-        <el-button @click="resetPassword" type="info">重置密码</el-button>
-        <el-button @click="resetPayPassword" type="info">重置支付密码</el-button>
+        <el-button @click="deleteComment" type="danger">删除</el-button>
+        <el-button @click="recoverComment" type="success">恢复</el-button>
       </el-col>
       <el-col :span="3">
         <el-select v-model="selects" placeholder="搜索字段">
@@ -39,9 +37,9 @@
         <el-table ref="dataTable" border :data="tableData" style="width: 100%" @selection-change="(val) => selectedData = val">
           <el-table-column type="selection" width="50" />
           <el-table-column prop="id" label="ID" width="100" />
-          <el-table-column prop="account" label="账号" />
-          <el-table-column prop="nickname" label="昵称" />
-          <el-table-column prop="time" label="注册时间" >
+          <el-table-column prop="topicId" label="帖子ID" />
+          <el-table-column prop="content" label="内容" />
+          <el-table-column label="时间" >
             <template scope="scope">
               {{scope.row.time | timeFormat}}
             </template>
@@ -51,14 +49,8 @@
               <span :style="{color: scope.row.status === 0 ? 'green': 'red'}">{{scope.row.status | status}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="sex" label="性别" />
-          <el-table-column prop="email" label="邮箱" />
-          <el-table-column prop="qq" label="QQ" />
-          <el-table-column prop="weixin" label="微信" />>
-          <el-table-column prop="level" label="等级" />
-          <el-table-column prop="watchNum" label="关注数" />
-          <el-table-column prop="fansNum" label="粉丝数" />
-          <el-table-column prop="gold" label="金币数" />
+          <el-table-column prop="username" label="用户名" />
+          <el-table-column prop="associationName" label="社团名" />
         </el-table>
       </el-col>
     </el-row>
@@ -72,7 +64,7 @@
 </template>
 
 <script>
-  import {memberManageRequest} from '@/request'
+  import {communityTopicCommentRequest} from '@/request'
   export default{
     data () {
       return {
@@ -88,45 +80,35 @@
       this.search(1)
     },
     methods: {
-      forbid () {
-        var ids = this.selectedData.map(item => item.id)
-
-        memberManageRequest
-          .forbid(ids)
-          .then(({data}) => {
-            if (data === 'NoError') {
-              this.openSuccess(`成功修改 ${ids.length} 条记录`)
-              this.selectedData.forEach(item => {
-                item.status = 1
-              })
-              this.clearTableSelection()
-            } else {
-              this.openError('修改失败')
-            }
+      async deleteComment () {
+        let res = await communityTopicCommentRequest.deleteComment(this.ids)
+        if (res.status === 200 && res.data === 'NoError') {
+          this.openSuccess(`成功修改 ${this.ids.length} 条记录`)
+          this.selectedData.forEach(s => {
+            s.status = 1
           })
+          this.clearTableSelection()
+        } else {
+          this.openError('修改失败')
+        }
       },
-      recover () {
-        var ids = this.selectedData.map(item => item.id)
-
-        memberManageRequest
-          .recover(ids)
-          .then(({data}) => {
-            if (data === 'NoError') {
-              this.openSuccess(`成功修改 ${ids.length} 条记录`)
-              this.selectedData.forEach(item => {
-                item.status = 0
-              })
-              this.clearTableSelection()
-            } else {
-              this.openError('修改失败')
-            }
+      async recoverComment () {
+        let res = await communityTopicCommentRequest.recoverComment(this.ids)
+        if (res.status === 200 && res.data === 'NoError') {
+          this.openSuccess(`成功修改 ${this.ids.length} 条记录`)
+          this.selectedData.forEach(s => {
+            s.status = 0
           })
+          this.clearTableSelection()
+        } else {
+          this.openError('修改失败')
+        }
       },
       clearTableSelection () {
         this.$refs.dataTable.clearSelection()
       },
       resetPassword () {
-        memberManageRequest
+        communityTopicCommentRequest
           .resetPassword(this.ids)
           .then(({data}) => {
             this.openSuccess(`成功修改 ${this.ids.length} 条记录`)
@@ -134,7 +116,7 @@
           }).catch(() => this.openError('修改失败'))
       },
       resetPayPassword () {
-        memberManageRequest
+        communityTopicCommentRequest
           .resetPayPassword(this.ids)
           .then(({data}) => {
             this.openSuccess(`成功修改 ${this.ids.length} 条记录`)
@@ -143,13 +125,12 @@
       },
       search (page = 1) {
         typeof page !== 'number' ? page = 1 : void 0
-        // TODO:搜索
         var param = {
           page
         }
         param[this.selects] = this.searchText ? this.searchText : undefined
 
-        memberManageRequest
+        communityTopicCommentRequest
           .search(param)
           .then(({data}) => {
             this.tableData = data.data
@@ -161,14 +142,6 @@
         this.search(page)
       }
     },
-    // filters: {
-    //   status (value) {
-    //     switch (value) {
-    //       case 0: return '正常'
-    //       case 1: return '禁用'
-    //     }
-    //   }
-    // },
     computed: {
       ids () {
         return this.selectedData.map(item => item.id)
@@ -176,10 +149,11 @@
       selectOptions () {
         let mapName = new Map([
           ['id', 'ID'],
-          ['account', '账号'],
-          ['nickname', '昵称'],
-          ['status', '状态'],
-          ['schoolName', '学校']
+          ['topicId', '帖子ID'],
+          ['content', '内容'],
+          ['username', '用户名'],
+          ['associationName', '社团名'],
+          ['status', '状态']
         ])
 
         return Array.from(mapName.keys())

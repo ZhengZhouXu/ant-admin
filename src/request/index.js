@@ -71,9 +71,35 @@ var communityManageRequest = {
   }
 }
 
-var roleManageRequest = {
+var communityTopicRequest = {
+  search (param) {
+    return post('/admin/CommunityTopic/Search', sf(param))
+  },
+  deleteTopic (ids) {
+    return post('/admin/CommunityTopic/DeleteTopic', sf({ids}))
+  },
+  recoverTopic (ids) {
+    return post('/admin/CommunityTopic/RecoverTopic', sf({ids}))
+  }
 }
 
+var giftManageRequest = {
+  getGitfList () {
+    return post('/admin/GiftManage/GetGiftList')
+  }
+}
+
+var communityTopicCommentRequest = {
+  search (param) {
+    return post('/admin/CommunityTopicComment/Search', sf(param))
+  },
+  deleteComment (ids) {
+    return post('/admin/CommunityTopicComment/DeleteComment', sf({ids}))
+  },
+  recoverComment (ids) {
+    return post('/admin/CommunityTopicComment/RecoverComment', sf({ids}))
+  }
+}
 export {
   loginRequest,
   indexRequest,
@@ -81,6 +107,8 @@ export {
   memberManageRequest,
   messageManageRequest,
   communityManageRequest,
-  roleManageRequest
+  communityTopicRequest,
+  communityTopicCommentRequest,
+  giftManageRequest
 }
 

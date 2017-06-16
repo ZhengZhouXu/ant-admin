@@ -17,6 +17,9 @@
             <el-menu-item index="membermanage">会员管理</el-menu-item>
             <el-menu-item index="messagemanage">消息管理</el-menu-item>
             <el-menu-item index="communitymanage">社团管理</el-menu-item>
+            <el-menu-item index="communitytopic">社团帖子管理</el-menu-item>
+            <el-menu-item index="comunitytopiccomment">社团帖子评论管理</el-menu-item>
+            <el-menu-item index="giftManage">礼物管理</el-menu-item>
             <el-submenu index="1-2">
               <template slot="title">后台管理员</template>
               <el-menu-item index="1-2-1" >账号管理</el-menu-item>
@@ -91,7 +94,10 @@
       home,
       membermanage: resolve => require(['@/page/membermanage/membermanage'], resolve),
       messagemanage: resolve => require(['@/page/messagemanage/messagemanage'], resolve),
-      communitymanage: resolve => require(['@/page/communitymanage/communitymanage'], resolve)
+      communitymanage: resolve => require(['@/page/communitymanage/communitymanage'], resolve),
+      communitytopic: resolve => require(['@/page/communitytopic/communitytopic'], resolve),
+      comunitytopiccomment: resolve => require(['@/page/comunitytopiccomment/comunitytopiccomment'], resolve),
+      giftManage: resolve => require(['@/page/giftmanage/giftmanage'], resolve)
     }
   }
 </script>
