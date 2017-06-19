@@ -86,6 +86,9 @@ var communityTopicRequest = {
 var giftManageRequest = {
   getGitfList () {
     return post('/admin/GiftManage/GetGiftList')
+  },
+  modifyGift (id, name, price) {
+    return post('/admin/GiftManage/ModifyGift', sf({id, name, price}))
   }
 }
 

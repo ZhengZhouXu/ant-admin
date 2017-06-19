@@ -17,7 +17,7 @@
           <el-table-column prop="price" label="价格" />
           <el-table-column prop="picUrl" label="图片" >
             <template scope="scope">
-              <img src="scope.row.picUrl" alt="礼物图片">
+              <img width="50" height="50" :src="scope.row.picUrl" alt="礼物图片">
             </template>
           </el-table-column>
            <el-table-column label="操作" width="100">
@@ -41,6 +41,7 @@
   import {giftManageRequest} from '@/request'
   /* eslint-disable no-unused-vars */
   import modify from './child/modify.vue'
+
   export default{
     data () {
       return {
@@ -62,13 +63,13 @@
         const h = this.$createElement
         let form = {}
 
-        console.log(row)
         this.$msgbox({
           title: '消息',
           message: h(modify, {
             props: {
               name: row.name,
-              price: row.price
+              price: row.price,
+              id: row.id
             },
             key: row.id
           }),
@@ -77,10 +78,26 @@
             done()
           }
         }).then(action => {
-          this.$message({
-            type: 'info',
-            message: 'name: ' + form.name + ' price' + form.price
-          })
+          if (action === 'confirm') {
+            // 修改礼物的name和price
+            giftManageRequest
+              .modifyGift(form.id, form.name, form.price)
+              .then(res => {
+                if (res.data) {
+                  this.tableData.forEach(item => {
+                    if (item.id === form.id) {
+                      item.name = form.name
+                      item.price = form.price
+                      item.picUrl = form.picUrl
+                    }
+                  })
+                  this.openSuccess('修改成功!')
+                }
+              })
+              .catch(e => {
+                this.openError('修改失败，稍后再试!')
+              })
+          }
         })
       },
       // forbid () {
