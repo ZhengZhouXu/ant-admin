@@ -19,7 +19,9 @@
             <el-menu-item index="communitymanage">社团管理</el-menu-item>
             <el-menu-item index="communitytopic">社团帖子管理</el-menu-item>
             <el-menu-item index="comunitytopiccomment">社团帖子评论管理</el-menu-item>
-            <el-menu-item index="giftManage">礼物管理</el-menu-item>
+            <el-menu-item index="giftmanage">礼物管理</el-menu-item>
+            <el-menu-item index="rolemanage">角色管理</el-menu-item>
+            <el-menu-item index="adminusermanage">后台用户管理</el-menu-item>
             <el-submenu index="1-2">
               <template slot="title">后台管理员</template>
               <el-menu-item index="1-2-1" >账号管理</el-menu-item>
@@ -60,6 +62,9 @@
         }]
       }
     },
+    created () {
+      console.log(this.$parent)
+    },
     methods: {
       menuSelect (key, keyPath, v) {
         var name = v.$el.innerText
@@ -97,7 +102,9 @@
       communitymanage: resolve => require(['@/page/communitymanage/communitymanage'], resolve),
       communitytopic: resolve => require(['@/page/communitytopic/communitytopic'], resolve),
       comunitytopiccomment: resolve => require(['@/page/comunitytopiccomment/comunitytopiccomment'], resolve),
-      giftManage: resolve => require(['@/page/giftmanage/giftmanage'], resolve)
+      giftmanage: resolve => require(['@/page/giftmanage/giftmanage'], resolve),
+      rolemanage: resolve => require(['@/page/rolemanage/rolemanage'], resolve),
+      adminusermanage: resolve => require(['@/page/adminusermanage/adminusermanage'], resolve)
     }
   }
 </script>

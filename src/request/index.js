@@ -103,6 +103,30 @@ var communityTopicCommentRequest = {
     return post('/admin/CommunityTopicComment/RecoverComment', sf({ids}))
   }
 }
+
+var roleRequest = {
+  powserList () {
+    return post('/admin/Power/GetPowers')
+  },
+  deleteRole (ids) {
+    return post('/admin/Power/DeleteRole', sf({ids}))
+  },
+  getRoles () {
+    return post('/admin/Power/GetRoles')
+  },
+  modifyRole (id, powerIds, name) {
+    return post('/admin/Power/ModifyRole', sf({id, powerIds, name}))
+  },
+  getAdminUser () {
+    return post('/admin/Power/GetAdminUser')
+  },
+  removeAdminUser (ids) {
+    return post('/admin/Power/RemoveAdminUser', sf({ids}))
+  },
+  saveUserRoles (id, roleIds) {
+    return post('/admin/Power/saveUserRoles', sf({id, roleIds}))
+  }
+}
 export {
   loginRequest,
   indexRequest,
@@ -112,6 +136,7 @@ export {
   communityManageRequest,
   communityTopicRequest,
   communityTopicCommentRequest,
-  giftManageRequest
+  giftManageRequest,
+  roleRequest
 }
 

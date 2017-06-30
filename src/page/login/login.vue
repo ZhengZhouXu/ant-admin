@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       username: 'xuxule',
-      password: 'asd123',
+      password: '123456',
       code: ''
     }
   },
@@ -35,7 +35,6 @@ export default {
       let res = await loginRequest.login(this.username, this.password, this.code)
       if (typeof res.data !== 'string') {
         this.$store.commit('setUser', res.data)
-        console.log(this.$store.state.user.userInfo)
         this.$router.push('/index')
       } else {
         this.openError(res.data)
